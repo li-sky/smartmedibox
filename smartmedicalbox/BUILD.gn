@@ -1,0 +1,62 @@
+# Copyright (c) 2020 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+import("//build/lite/config/component/lite_component.gni")
+import("//build/lite/config/subsystem/lite_subsystem.gni")
+config_file = [ "//vendor/bearpi/bearpi_hm_nano/common/third_party/libs/libpahomqtt_static.a" ]
+copy("config") {
+  sources = config_file
+  outputs = [ "//out/hispark_pegasus/wifiiot_hispark_pegasus/libs/{{source_file_part}}" ]
+}
+
+static_library("smartmedicalbox") {
+    sources = [
+        #"i2c.c",
+        "mqtt.c",
+        "wifi.c",
+        "http.c",
+        "mp3.c",
+        "sonic.c"
+        #"spiflash.c"
+    ]
+
+    include_dirs = [
+        "//utils/native/lite/include",
+        "//device/hisilicon/hispark_pegasus/sdk_liteos/include/base",
+        "//device/hisilicon/hispark_pegasus/sdk_liteos/include",
+        "//base/iot_hardware/peripheral/interfaces/kits",
+        "//vendor/bearpi/bearpi_hm_nano/common/iot_hardware_hals/include",
+        "//kernel/liteos_m/components/cmsis",
+        "//foundation/communication/interfaces/kits/wifiiot_lite",
+        "//foundation/communication/wifi/interfaces/innerkits/native_c", 
+        "//vendor/hisi/hi3861/hi3861/third_party/lwip_sack/include/",
+        "//foundation/communication/wifi_lite/interfaces/wifiservice/",
+        "//third_party/cJSON",
+        "//third_party/http-parser",
+        "//vendor/bearpi/bearpi_hm_nano/common/third_party/paho_mqtt/MQTTClient-C/src",
+        "//vendor/bearpi/bearpi_hm_nano/common/third_party/paho_mqtt/MQTTPacket/src",
+        "//device/soc/hisilicon/hi3861v100/sdk_liteos/include/base",
+        "//third_party/libhelix-mp3/pub",
+    ]
+
+    deps = [
+        ":config",
+        "//vendor/bearpi/bearpi_hm_nano/common/iot_hardware_hals:bearpi_iot_hardware_hals",
+        "//device/hisilicon/hispark_pegasus/sdk_liteos:wifiiot_sdk",
+        #"//third_party/paho.mqtt.embedded-c/MQTTClient-C/samples/ohos:mqtt_test",
+        "//third_party/libhelix-mp3:libhelix",
+        "//third_party/http-parser:http_parser"
+    ]
+    
+}
